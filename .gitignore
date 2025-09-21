@@ -1,0 +1,9 @@
+.env
+
+faiss_index.bin
+docs.pkl
+
+__pycache__/
+.pytest_cache/
+
+.vscode/
