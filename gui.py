@@ -18,10 +18,6 @@ from docx.oxml.ns import nsdecls
 from docx.oxml import parse_xml
 import json
 
-# ==============================================================================
-# БЛОК 1: НАСТРОЙКА И ФУНКЦИИ-ГЕНЕРАТОРЫ
-# ==============================================================================
-
 def setup():
     """Загружает все необходимые модели, данные и API ключи."""
     print("Начало настройки системы...")
@@ -61,8 +57,6 @@ def search(query, k, embedding_model, faiss_index, documents):
     
     results = [documents[i] for i in indices[0]]
     return results
-
-# --- ФУНКЦИИ-ГЕНЕРАТОРЫ КОНТЕКСТА И ПРОМПТОВ ---
 
 def get_context_for_phys_culture(embedding_model, faiss_index, documents, age_group, month, monthly_plan):
     print(f"Поиск методик по плану для: {age_group} / {month}")
@@ -501,10 +495,6 @@ def generate_literacy_cell_prompt(context, age_group, month, monthly_plan):
     print("Промпт создан. Отправка в API.")
     return master_prompt
 
-# ==============================================================================
-# БЛОК 2: КОД ДЛЯ РАБОТЫ С WORD (.docx)
-# ==============================================================================
-
 def create_document_header(doc, group_name, year):
     doc.add_paragraph('Согласовано').alignment = WD_ALIGN_PARAGRAPH.LEFT
     doc.add_paragraph(f'Перспективный план организованной деятельности на {year} учебный год', style='Title').alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -553,20 +543,14 @@ def add_row_to_table(table, month, area, content, is_first_entry_for_month=False
     
     print(f"Ячейка добавлена в документ: {month} / {area}")
 
-# ==============================================================================
-# БЛОК 2: ОСНОВНАЯ ЛОГИКА ГЕНЕРАЦИИ (адаптированная для потока)
-# ==============================================================================
-
 def run_generation_process(age_group, update_queue):
     """Эта функция содержит всю логику из старого __main__ и "общается" с GUI через очередь."""
     try:
-        # --- Шаг 0: Настройка ---
         update_queue.put(("status", "Шаг 0/4: Настройка системы..."))
         embedding_model, faiss_index, documents, generative_model = setup()
         if not all((embedding_model, faiss_index, documents, generative_model)):
             raise Exception("Ошибка инициализации моделей или базы знаний.")
-
-        # --- Шаг 1: Загрузка карты ---
+        
         update_queue.put(("status", "Шаг 1/4: Загрузка учебной программы..."))
         with open("curriculum_map.json", "r", encoding="utf-8") as f:
             curriculum_map = json.load(f)
@@ -580,7 +564,6 @@ def run_generation_process(age_group, update_queue):
         total_steps = sum(1 for area, plans in plan_for_age_group.items() for p in plans)
         steps_completed = 0
 
-        # >>> ВАЖНО: Вставь сюда свой полный FUNCTION_MAP <<<
         FUNCTION_MAP = {
             "Физическая культура": "phys_culture",
             "Развитие речи": "speech_dev",
@@ -593,13 +576,11 @@ def run_generation_process(age_group, update_queue):
             "Ознакомление с окружающим миром": "world"
         }
 
-        # --- Шаг 2: Создание документа ---
         update_queue.put(("status", "Шаг 2/4: Создание Word документа..."))
         document = Document()
         create_document_header(document, age_group, YEAR)
         plan_table = setup_table(document)
         
-        # --- Шаг 3: Цикл генерации ---
         update_queue.put(("status", "Шаг 3/4: Начало генерации контента..."))
         
         for month in ALL_MONTHS:
@@ -630,7 +611,6 @@ def run_generation_process(age_group, update_queue):
                 progress = (steps_completed / total_steps) * 100
                 update_queue.put(("progress", progress))
 
-        # --- Шаг 4: Сохранение ---
         update_queue.put(("status", "Шаг 4/4: Сохранение файла..."))
         safe_age_group = age_group.replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_')
         output_filename = f"Годовой_Перспективный_план_{safe_age_group}.docx"
@@ -641,10 +621,6 @@ def run_generation_process(age_group, update_queue):
 
     except Exception as e:
         update_queue.put(("error", str(e)))
-
-# ==============================================================================
-# БЛОК 3: КОД ГРАФИЧЕСКОГО ИНТЕРФЕЙСА (GUI)
-# ==============================================================================
 
 class PlanGeneratorApp:
     def __init__(self, root):
@@ -722,10 +698,6 @@ class PlanGeneratorApp:
             if self.start_button['state'] == 'disabled':
                 self.start_button.config(state="normal")
                 self.status_label.config(text="Процесс завершен.")
-
-# ==============================================================================
-# БЛОК 4: ТОЧКА ВХОДА ДЛЯ ЗАПУСКА GUI
-# ==============================================================================
 
 if __name__ == "__main__":
     root = tk.Tk()
