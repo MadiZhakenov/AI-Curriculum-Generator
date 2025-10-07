@@ -628,7 +628,8 @@ class ModernPlanGeneratorApp:
         self.root.title("Генератор Перспективных Планов")
         self.root.geometry("650x700")
         self.root.resizable(False, False) 
-        self.root.configure(bg='#0f0f23')
+
+        self.root.configure(bg='#F4F5F7')
         
         self.setup_styles()
         
@@ -647,9 +648,8 @@ class ModernPlanGeneratorApp:
         self._start_animations()
 
     def setup_styles(self):
-        """Настройка современных стилей для ttk виджетов"""
+        """Настройка современных стилей для ttk виджетов под светлую тему"""
         style = ttk.Style()
-        
         style.theme_use('clam')
         
         style.configure('Modern.TButton',
@@ -663,70 +663,67 @@ class ModernPlanGeneratorApp:
         style.map('Modern.TButton',
                  background=[('active', '#4f46e5'),
                            ('pressed', '#3730a3'),
-                           ('disabled', '#312f6b')],
-                 foreground=[('disabled', '#6c7086')])
-        
+                           ('disabled', '#D1D5DB')],
+                 foreground=[('disabled', '#9CA3AF')]) 
+
         style.configure('Modern.TCombobox',
-                       fieldbackground='#1e1e2e',
-                       background='#1e1e2e',
-                       foreground='#cdd6f4',
-                       arrowcolor='#cdd6f4',
-                       bordercolor='#313244',
-                       lightcolor='#1e1e2e',
-                       darkcolor='#1e1e2e',
+                       fieldbackground='white', 
+                       background='white',
+                       foreground='#1F2937',
+                       arrowcolor='#6B7280',
+                       bordercolor='#D1D5DB',
+                       lightcolor='white',
+                       darkcolor='white',
                        borderwidth=1,
                        relief='flat',
                        padding=(10, 8),
                        font=('Segoe UI', 10))
 
         style.map('Modern.TCombobox',
-                  fieldbackground=[('readonly', '#1e1e2e')],
-                  foreground=[('readonly', '#cdd6f4')],
-                  bordercolor=[('focus', '#6366f1'), ('hover', '#45475a')],
+                  fieldbackground=[('readonly', 'white')],
+                  foreground=[('readonly', '#1F2937')],
+                  bordercolor=[('focus', '#6366f1'), ('hover', '#9CA3AF')],
                   relief=[('focus', 'solid'), ('hover', 'solid')])
 
         style.configure('Modern.Horizontal.TProgressbar',
                        background='#6366f1',
-                       troughcolor='#1e1e2e',
+                       troughcolor='#E5E7EB',
                        borderwidth=0,
                        lightcolor='#6366f1',
                        darkcolor='#6366f1')
 
     def _create_widgets(self):
-        main_container = tk.Frame(self.root, bg='#0f0f23')
+        main_container = tk.Frame(self.root, bg='#F4F5F7')
         main_container.pack(fill=tk.BOTH, expand=True, padx=40, pady=40)
         
-        header_frame = tk.Frame(main_container, bg='#0f0f23')
+        header_frame = tk.Frame(main_container, bg='#F4F5F7')
         header_frame.pack(fill=tk.X, pady=(0, 40))
         
         title_label = tk.Label(header_frame, 
                               text="Генератор Перспективных Планов",
                               font=('Segoe UI', 24, 'bold'),
-                              fg='#cdd6f4',
-                              bg='#0f0f23')
+                              fg='#1F2937',
+                              bg='#F4F5F7')
         title_label.pack()
         
         subtitle_label = tk.Label(header_frame,
                                  text="Создание учебных планов с использованием ИИ",
                                  font=('Segoe UI', 12),
-                                 fg='#6c7086',
-                                 bg='#0f0f23')
+                                 fg='#6B7280',
+                                 bg='#F4F5F7')
         subtitle_label.pack(pady=(5, 0))
         
-        card_frame = tk.Frame(main_container, bg='#1e1e2e', relief='flat', bd=0)
+        card_frame = tk.Frame(main_container, bg='white', relief='flat', bd=0)
         card_frame.pack(fill=tk.X, pady=(0, 30))
         
-        shadow_frame = tk.Frame(main_container, bg='#11111b', height=2)
-        shadow_frame.pack(fill=tk.X, pady=(0, 2))
-        
-        card_inner = tk.Frame(card_frame, bg='#1e1e2e')
+        card_inner = tk.Frame(card_frame, bg='white')
         card_inner.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
         
         group_label = tk.Label(card_inner,
                               text="Выберите возрастную группу",
                               font=('Segoe UI', 14, 'bold'),
-                              fg='#cdd6f4',
-                              bg='#1e1e2e')
+                              fg='#1F2937',
+                              bg='white')
         group_label.pack(anchor='w', pady=(0, 10))
         
         self.age_combo = ttk.Combobox(card_inner, 
@@ -737,7 +734,7 @@ class ModernPlanGeneratorApp:
         self.age_combo.pack(fill=tk.X, pady=(0, 25))
         self.age_combo.set(self.age_groups[2])
         
-        button_frame = tk.Frame(card_inner, bg='#1e1e2e')
+        button_frame = tk.Frame(card_inner, bg='white')
         button_frame.pack(fill=tk.X)
         
         self.start_button = ttk.Button(button_frame, 
@@ -746,7 +743,7 @@ class ModernPlanGeneratorApp:
                                       style='Modern.TButton')
         self.start_button.pack(fill=tk.X)
         
-        progress_frame = tk.Frame(main_container, bg='#0f0f23')
+        progress_frame = tk.Frame(main_container, bg='#F4F5F7')
         progress_frame.pack(fill=tk.X, pady=(0, 20))
         
         self.progress_bar = ttk.Progressbar(progress_frame, 
@@ -758,8 +755,8 @@ class ModernPlanGeneratorApp:
         self.status_label = tk.Label(progress_frame,
                             text="Готов к работе",
                             font=('Segoe UI', 11),
-                            fg='#a6adc8',
-                            bg='#0f0f23',
+                            fg='#4B5563',
+                            bg='#F4F5F7',
                             justify='left',    
                             wraplength=500) 
         self.status_label.pack(fill=tk.X, anchor='w')
@@ -768,36 +765,33 @@ class ModernPlanGeneratorApp:
                                   text="",
                                   font=('Segoe UI', 11),
                                   fg='#6366f1',
-                                  bg='#0f0f23')
+                                  bg='#F4F5F7')
         self.dots_label.pack(anchor='w')
         
-        info_frame = tk.Frame(main_container, bg='#181825')
+        info_frame = tk.Frame(main_container, bg='#FFFFFF', borderwidth=1, relief="solid", highlightbackground="#E5E7EB", highlightthickness=1)
         info_frame.pack(fill=tk.X, pady=(20, 0))
         
-        info_inner = tk.Frame(info_frame, bg='#181825')
+        info_inner = tk.Frame(info_frame, bg='#FFFFFF')
         info_inner.pack(fill=tk.BOTH, expand=True, padx=20, pady=15)
         
         info_title = tk.Label(info_inner,
                              text="ℹ️ Информация",
                              font=('Segoe UI', 12, 'bold'),
-                             fg='#cdd6f4',
-                             bg='#181825')
+                             fg='#1F2937',
+                             bg='#FFFFFF')
         info_title.pack(anchor='w', pady=(0, 5))
         
         info_text = tk.Label(info_inner,
                             text="• Убедитесь, что файлы faiss_index.bin и docs.pkl находятся в рабочей директории\n• Добавьте GEMINI_API_KEY в файл .env\n• Процесс генерации может занять несколько минут",
                             font=('Segoe UI', 10),
-                            fg='#6c7086',
-                            bg='#181825',
+                            fg='#6B7280',
+                            bg='#FFFFFF',
                             justify='left')
         info_text.pack(anchor='w')
 
     def _start_animations(self):
-        """Запуск анимаций интерфейса"""
         self._animate_dots()
-
     def _animate_dots(self):
-        """Анимация точек во время генерации"""
         if self.is_generating:
             dots = "." * (self.animation_frame % 4)
             self.dots_label.config(text=dots)
@@ -805,85 +799,68 @@ class ModernPlanGeneratorApp:
         else:
             self.dots_label.config(text="")
             self.animation_frame = 0
-        
         self.root.after(500, self._animate_dots)
-
     def start_generation(self):
         selected_group = self.age_combo.get()
         if not selected_group:
             messagebox.showwarning("Предупреждение", "Пожалуйста, выберите возрастную группу.")
             return
-
         self.is_generating = True
         self.start_button.config(state="disabled", text="⏳ Генерация...")
         self.progress_bar["value"] = 0
-        self.status_label.config(text="Инициализация системы", fg='#f9e2af')
-        
+        self.status_label.config(text="Инициализация системы", fg='#D97706') 
         self.generation_thread = threading.Thread(target=run_generation_process,
                                         args=(selected_group, self.update_queue),
                                         daemon=True)
         self.generation_thread.start()
-        
         self.root.after(100, self.check_queue)
-
     def check_queue(self):
         while not self.update_queue.empty():
             try:
                 message = self.update_queue.get_nowait()
                 msg_type, msg_data = message
-                
                 if msg_type == "progress":
                     self.progress_bar["value"] = msg_data
-                    if msg_data < 25:
-                        color = '#f9e2af'
-                    elif msg_data < 75:
-                        color = '#fab387'
-                    else:
-                        color = '#a6e3a1'
+                    if msg_data < 25: color = '#D97706' 
+                    elif msg_data < 75: color = '#D97706'
+                    else: color = '#059669'
                     self.status_label.config(fg=color)
-                    
                 elif msg_type == "status":
                     self.status_label.config(text=msg_data)
-                    
                 elif msg_type == "done":
                     self.is_generating = False
                     self.progress_bar["value"] = 100
                     self.start_button.config(state="normal", text="✅ Завершено")
-                    self.status_label.config(text=f"Готово! План сохранен: {msg_data}", fg='#a6e3a1')
-                    
-                    messagebox.showinfo("🎉 Успех", 
-                                      f"Генерация успешно завершена!\n\nФайл сохранен как:\n{msg_data}")
-                    
+                    self.status_label.config(text=f"Готово! План сохранен: {msg_data}", fg='#059669')
+                    messagebox.showinfo("🎉 Успех", f"Генерация успешно завершена!\n\nФайл сохранен как:\n{msg_data}")
                     self.root.after(3000, lambda: self.start_button.config(text="🚀 Начать генерацию"))
                     return
-                    
                 elif msg_type == "error":
                     self.is_generating = False
                     self.start_button.config(state="normal", text="❌ Ошибка")
-                    self.status_label.config(text="Произошла ошибка", fg='#f38ba8')
+                    self.status_label.config(text="Произошла ошибка", fg='#DC2626')
                     messagebox.showerror("Ошибка", f"Произошла ошибка:\n{msg_data}")
-                    
                     self.root.after(3000, lambda: self.start_button.config(text="🚀 Начать генерацию"))
                     return
-
-            except queue.Empty:
-                pass
-
+            except queue.Empty: pass
         if self.generation_thread.is_alive():
             self.root.after(100, self.check_queue)
         else:
             if self.start_button['state'] == 'disabled':
                 self.is_generating = False
                 self.start_button.config(state="normal")
-                self.status_label.config(text="Процесс завершен", fg='#a6adc8')
+                self.status_label.config(text="Процесс завершен", fg='#4B5563')
+
 
 if __name__ == "__main__":
     root = tk.Tk()
     
-    root.option_add('*TCombobox*Listbox.background', '#1e1e2e')
-    root.option_add('*TCombobox*Listbox.foreground', '#cdd6f4')
-    root.option_add('*TCombobox*Listbox.selectBackground', '#6366f1')
-    root.option_add('*TCombobox*Listbox.selectForeground', 'white')
+    root.option_add('*TCombobox*Listbox.background', 'white')
+    root.option_add('*TCombobox*Listbox.foreground', '#1F2937')
+    
+    root.option_add('*TCombobox*Listbox.selectBackground', '#DDDDF4') 
+    root.option_add('*TCombobox*Listbox.selectForeground', '#1F2937')
+
     root.option_add('*TCombobox*Listbox.font', ('Segoe UI', 10))
     root.option_add('*TCombobox*Listbox.border', 0)
     root.option_add('*TCombobox*Listbox.relief', 'flat')
